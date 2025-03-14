@@ -1,0 +1,105 @@
+<.container max_width="md" class="m-4">
+  <div id="loading_sysex" phx-hook="FileHook">
+    <form class="flex justify-between px-4 ">
+      <.field
+        phx-change="file_change"
+        class="h-10"
+        type="file"
+        value=""
+        label="Ouvrir une banque de preset .syx"
+        name="file"
+        accept=".syx"
+      />
+      <.button disabled={@disable_open} class="h-10 self-center" type="submit">Ouvrir</.button>
+    </form>
+  </div>
+
+  <div>
+    <%!-- <form id="form_sysex" phx-submit="send_sysex">
+      <.field
+        type="select"
+        name="select_output"
+        label="Sortie MIDI"
+        value={nil}
+        group_layout="row"
+        options={
+          for output <- @interfaces.outputs do
+            {output.name, output.id}
+          end
+        }
+      />
+
+      <.button type="submit">Envoyer</.button>
+    </form> --%>
+
+    <div>
+      <%= if @file do %>
+        <div class="flex justify-between w-full">
+          <div class="self-center">
+            <.badge color="warning" variant="outline" label="lg" size="lg">
+              <.icon name="hero-signal-solid" class="w-5 h-5 mr-1 pb-[0.025rem]" /> {@file}
+            </.badge>
+          </div>
+          <div id="midi-container" phx-hook="MidiHook">
+            <form
+              id="form_sysex_library"
+              class="form_sysex"
+              phx-submit="send_sysex"
+              class="flex justify-center gap-2"
+            >
+              <.field
+                type="select"
+                class="flex h-8"
+                name="select_output"
+                label="Sortie MIDI"
+                value={nil}
+                group_layout="row"
+                options={
+                  for output <- @interfaces.outputs do
+                    {output.name, output.id}
+                  end
+                }
+              />
+              <.field
+                type="text"
+                label="Message à envoyer"
+                value={@file_data}
+                name="data"
+                id="sysex-data"
+                placeholder="Entrez les données SysEx 0 à 255 (séparées par des virgules)"
+              />
+
+              <.button type="submit" class="h-8 self-center">
+                <.icon name="hero-play" class="w-5 h-5 mr-1 pb-[0.025rem]" /> Transmettre
+              </.button>
+            </form>
+          </div>
+        </div>
+        <table class="w-full ">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Voix</th>
+              <th>Nom</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for {voice, index} <- Enum.with_index(@voice_data) do %>
+              <tr>
+                <td>{index}</td>
+                <td>{extract_voice_mem(voice)}</td>
+                <td>
+                  {extract_voice_name(voice)}
+                </td>
+                <td>
+                  {extract_voice_type(voice)}
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+</.container>

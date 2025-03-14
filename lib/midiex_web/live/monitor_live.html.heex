@@ -1,0 +1,45 @@
+<.container max_width="md" class="m-4">
+  <div id="midi-monitor_container" phx-hook="MidiHook">
+    <form id="form_sysex" class="form_sysex" phx-submit="send_sysex">
+      <.field
+        type="select"
+        name="select_output"
+        label="Sortie MIDI"
+        value={nil}
+        group_layout="row"
+        options={
+          for output <- @interfaces.outputs do
+            {output.name, output.id}
+          end
+        }
+      />
+      <.field
+        type="text"
+        label="Message à envoyer"
+        value={@message}
+        name="data"
+        id="sysex-data-monitor"
+        placeholder="Entrez les données SysEx 0 à 255 (séparées par des virgules)"
+      />
+      <.button type="submit">Envoyer</.button>
+    </form>
+    <form phx-submit="send_hexa">
+      <.field
+        type="text"
+        label="Hexadecimal à convertir"
+        value=""
+        name="hexa"
+        id="hexa-data"
+        placeholder="Entrez les données SysEx en hexa (séparées par un espace)"
+      />
+      <.button type="submit">Envoyer</.button>
+    </form>
+    <h3>Messages reçus</h3>
+    <ul>
+      <%= for message <- @received_messages do %>
+        <li>{inspect(message)}</li>
+      <% end %>
+    </ul>
+    <div></div>
+  </div>
+</.container>
