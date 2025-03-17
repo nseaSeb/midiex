@@ -38,6 +38,11 @@
     [role='button']:not(:disabled) {
         cursor: pointer;
     }
+    #flash {
+        p {
+            @apply dark:text-black;
+        }
+    }
 }
 
 @layer components {

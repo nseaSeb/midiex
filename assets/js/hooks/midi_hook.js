@@ -2,7 +2,7 @@
 let midiAccess = null;
 const MidiHook = {
     mounted() {
-        console.log('midi hook mounted');
+        console.log('midi hook mounted X1');
         this.initMIDI();
         this.handleSysExForm();
     },
@@ -67,7 +67,9 @@ const MidiHook = {
         // Écouter les messages MIDI entrants
         inputs.forEach((input) => {
             input.onmidimessage = (message) => {
-                this.pushEvent('midi-message-received', { data: Array.from(message.data) });
+                if (message.data[0] != 254) {
+                    this.pushEvent('midi-message-received', { data: Array.from(message.data) });
+                }
             };
         });
     },
@@ -76,6 +78,7 @@ const MidiHook = {
     handleEvent(event, payload) {
         console.log('Event reçu:', event, payload);
         if (event === 'send-sysex') {
+            console.log(payload.data);
             this.sendSysEx(payload.outputId, payload.data);
         }
     },
@@ -89,9 +92,16 @@ const MidiHook = {
         const output = midiAccess.outputs.get(outputId);
         if (output) {
             // Convertir en Uint8Array pour l'API Web MIDI
-            const dataArray = new Uint8Array(sysexData);
-            output.send(dataArray);
-            this.pushEvent('midi-message-sent', { outputId, data: Array.from(dataArray) });
+            try {
+                const dataArray = Uint8Array.from(sysexData);
+                dataArray[0] = 240;
+                output.send(dataArray);
+                console.log('Message SysEx envoyé avec succès:', dataArray);
+                this.pushEvent('midi-message-sent', { outputId, data: Array.from(dataArray) });
+            } catch (error) {
+                console.error("Erreur lors de l'envoi du message SysEx:", error);
+                this.pushEvent('midi-error', { message: `Erreur SysEx: ${error.message}` });
+            }
         } else {
             console.error(`Interface de sortie MIDI non trouvée: ${outputId}`);
             this.pushEvent('midi-error', { message: `Interface de sortie MIDI non trouvée: ${outputId}` });

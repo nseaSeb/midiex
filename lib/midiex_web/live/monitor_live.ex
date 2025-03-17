@@ -35,17 +35,18 @@ defmodule MidiexWeb.MonitorLive do
 
   @impl true
   def handle_event("send_sysex", %{"data" => data, "select_output" => output_id}, socket) do
-    sysex_data =
-      data
-      |> String.split(",")
-      |> Enum.map(&String.trim/1)
-      |> Enum.filter(&(&1 != ""))
-      |> Enum.map(&String.to_integer/1)
+    # sysex_data =
+    #   data
+    #   |> String.split(",")
+    #   |> Enum.map(&String.trim/1)
+    #   |> Enum.filter(&(&1 != ""))
+    #   |> Enum.map(&String.to_integer/1)
 
-    IO.inspect(sysex_data, label: "data")
+    # IO.inspect(sysex_data, label: "data")
 
-    Logger.info("Sending SysEx to output #{output_id}: #{inspect(sysex_data)}")
-    {:noreply, push_event(socket, "send-sysex", %{outputId: output_id, data: sysex_data})}
+    # Logger.info("Sending SysEx to output #{output_id}: #{inspect(sysex_data)}")
+    # {:noreply, push_event(socket, "send-sysex", %{outputId: output_id, data: sysex_data})}
+    {:noreply, socket}
   end
 
   @impl true

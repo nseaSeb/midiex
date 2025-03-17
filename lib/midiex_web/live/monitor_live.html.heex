@@ -1,6 +1,6 @@
-<.container max_width="md" class="m-4">
-  <div id="midi-monitor_container" phx-hook="MidiHook">
-    <form id="form_sysex" class="form_sysex" phx-submit="send_sysex">
+<.container max_width="md" class="w-full p-4">
+  <div id="midi-monitor_container" phx-hook="MidiHook" class="w-full">
+    <form id="form_sysex" class="form_sysex w-full" phx-submit="send_sysex">
       <.field
         type="select"
         name="select_output"
@@ -32,14 +32,14 @@
         id="hexa-data"
         placeholder="Entrez les données SysEx en hexa (séparées par un espace)"
       />
-      <.button type="submit">Envoyer</.button>
+      <.button type="submit">Convertir</.button>
     </form>
-    <h3>Messages reçus</h3>
-    <ul>
+    <.h3>Messages reçus</.h3>
+    <.ul class="h-32 overflow-auto">
       <%= for message <- @received_messages do %>
         <li>{inspect(message)}</li>
       <% end %>
-    </ul>
+    </.ul>
     <div></div>
   </div>
 </.container>

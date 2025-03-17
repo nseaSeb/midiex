@@ -22,6 +22,60 @@
     <.color_scheme_switch_js />
   </head>
   <body class="antialiased bg-white dark:bg-gray-900">
+
+    <nav class="sticky top-0 z-50 flex items-center justify-between w-full h-16 bg-amber-500 ">
+      <div class="flex  flex-wrap ml-3 sm:flex-nowrap sm:ml-10">
+        <.h2 class="text-amber-100 ">MidiEx</.h2>
+      </div>
+      <div class="flex justify-end gap-2">
+    <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
+      <%= if @current_user do %>
+        <li class="text-[0.8125rem] leading-6 text-amber-50">
+          {@current_user.email}
+        </li>
+        <li>
+          <.link
+            href={~p"/users/settings"}
+            class="text-[0.8125rem] leading-6 text-amber-50 font-semibold hover:text-zinc-700"
+          >
+            Settings
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/users/log_out"}
+            method="delete"
+            class="text-[0.8125rem] leading-6 text-amber-50 font-semibold hover:text-zinc-700"
+          >
+            Log out
+          </.link>
+        </li>
+      <% else %>
+        <li>
+          <.link
+            href={~p"/users/register"}
+            class="text-[0.8125rem] leading-6 text-amber-50 font-semibold hover:text-zinc-700"
+          >
+            Register
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/users/log_in"}
+            class="text-[0.8125rem] leading-6 text-amber-50 font-semibold hover:text-zinc-700"
+          >
+            Log in
+          </.link>
+        </li>
+      <% end %>
+    </ul>
+            <div class="gap-3 pr-4">
+        <.color_scheme_switch />
+      </div>
+      </div>
+  
+    </nav>
+
     <%= @inner_content %>
   </body>
 </html>

@@ -1,4 +1,4 @@
-<.container max_width="md" class="m-4">
+<.container max_width="md" class="w-full p-4">
   <div id="loading_sysex" phx-hook="FileHook">
     <form class="flex justify-between px-4 ">
       <.field
@@ -43,7 +43,7 @@
           <div id="midi-container" phx-hook="MidiHook">
             <form
               id="form_sysex_library"
-              class="form_sysex"
+              class="form_sysex flex gap-2"
               phx-submit="send_sysex"
               class="flex justify-center gap-2"
             >
@@ -60,8 +60,9 @@
                   end
                 }
               />
-              <.field
+              <.input
                 type="text"
+                class="hidden"
                 label="Message à envoyer"
                 value={@file_data}
                 name="data"
@@ -94,6 +95,9 @@
                 </td>
                 <td>
                   {extract_voice_type(voice)}
+            <%= if Enum.member?([2,7,9],Enum.at(voice, 33)) do %>
+            *
+            <% end %>
                 </td>
               </tr>
             <% end %>

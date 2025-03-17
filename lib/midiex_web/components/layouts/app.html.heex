@@ -2,25 +2,20 @@
   <.flash_group flash={@flash} />
 
   <div class="h-screen overflow-auto">
-    <nav class="sticky top-0 z-50 flex items-center justify-between w-full h-16 bg-white dark:bg-gray-900">
-      <div class="flex flex-wrap ml-3 sm:flex-nowrap sm:ml-10">
-        <.h2>MidiEx</.h2>
-      </div>
-      <div class="flex justify-end gap-3 pr-4">
-        <.color_scheme_switch />
-      </div>
-    </nav>
+
+      
+
 
     <.container class="mt-2">
       <.tabs class="gap-x-4">
         <.tab link_type="a" is_active={@active_tab == :home} to="/" label="Accueil" />
-        <.tab link_type="a" is_active={@active_tab == :library} to="/" label="Librairie" />
-        <.tab link_type="a" is_active={@active_tab == :sy77} to="/sy77" label="SY77" />
+        <.tab link_type="a" is_active={@active_tab == :library} to="/library" label="Librairie" />
+        <.tab link_type="a" is_active={@active_tab == :sy77} to="/sy77" label="Ouvrir fichier.syx" />
         <.tab
           link_type="live_redirect"
           is_active={@active_tab == :monitor}
           to="/monitor"
-          label="Monitor"
+          label="Moniteur midi"
         />
       </.tabs>
     </.container>

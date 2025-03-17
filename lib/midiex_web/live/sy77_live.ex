@@ -157,16 +157,17 @@ defmodule MidiexWeb.Sy77Live do
   def extract_voice_type(voice_data) when is_list(voice_data) do
     # Extraire le byte à l'index 32
     case Enum.at(voice_data, 33) do
-      0 -> "1 AFM"
-      1 -> "1 AFM"
-      2 -> "2 AFM"
-      3 -> "4 AFM"
-      4 -> "1 AWM"
-      5 -> "2 AWM"
-      6 -> "4 AWM"
-      7 -> "1 AFM & 1 AWM"
-      8 -> "2 AFM & 2 AWM"
-      9 -> "DRUM"
+      0 -> "1 AFM Mono"
+      1 -> "2 AFM Mono"
+      2 -> "4 AFM Mono"
+      3 -> "1 AFM Poly"
+      4 -> "2 AFM Poly"
+      5 -> "1 AWM"
+      6 -> "2 AWM"
+      7 -> "4 AWM"
+      8 -> "1 AFM & 1 AWM"
+      9 -> "2 AFM & 2 AWM"
+      10 -> "DRUM SET"
       _ -> "_"
     end
   end
