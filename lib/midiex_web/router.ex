@@ -22,8 +22,7 @@ defmodule MidiexWeb.Router do
 
     get("/", PageController, :home)
     live("/form", FormLive, :index)
-    live("/sy77", Sy77Live, :index)
-    live("/library", LibraryLive, :index)
+
     live("/monitor", MonitorLive, :index)
     live("/live", PageLive, :index)
     live("/live/modal/:size", PageLive, :modal)
@@ -74,6 +73,8 @@ defmodule MidiexWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{MidiexWeb.UserAuth, :ensure_authenticated}] do
+      live("/library", LibraryLive, :index)
+      live("/sy77", Sy77Live, :index)
       live("/users/settings", UserSettingsLive, :edit)
       live("/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email)
     end

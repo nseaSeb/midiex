@@ -40,7 +40,8 @@
               <.icon name="hero-signal-solid" class="w-5 h-5 mr-1 pb-[0.025rem]" /> {@file}
             </.badge>
           </div>
-          <div id="midi-container" phx-hook="MidiHook">
+    
+          <div id="midi-container" phx-hook="MidiHook" class="flex justify-center items-center gap-2">
             <form
               id="form_sysex_library"
               class="form_sysex flex gap-2"
@@ -74,6 +75,9 @@
                 <.icon name="hero-play" class="w-5 h-5 mr-1 pb-[0.025rem]" /> Transmettre
               </.button>
             </form>
+                  <div>
+          <.button type="button" color="danger" label="Ajouter à la librairie" phx-click="add_to_library" />
+          </div>
           </div>
         </div>
         <table class="w-full ">

@@ -43,6 +43,11 @@
             @apply dark:text-black;
         }
     }
+    #disconnected {
+        p {
+            @apply dark:text-black;
+        }
+    }
 }
 
 @layer components {

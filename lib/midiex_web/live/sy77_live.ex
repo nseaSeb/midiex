@@ -4,7 +4,7 @@ defmodule MidiexWeb.Sy77Live do
   require Logger
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     # Initialisation des assigns
     socket =
       socket
@@ -15,6 +15,7 @@ defmodule MidiexWeb.Sy77Live do
       |> assign(:file, nil)
       |> assign(:file_data, nil)
       |> assign(:voice_data, nil)
+      |> open_file(params)
       |> assign(:received_messages, [])
 
     {:ok, socket}
@@ -31,7 +32,6 @@ defmodule MidiexWeb.Sy77Live do
 
         case Sy77Library.extract_all_voices(syx_data) do
           {:ok, voice_data} ->
-            IO.inspect(voice_data)
             # base64_data = Sy77Library.encode_base64(syx_data)
             base64_data = Jason.encode!(syx_data)
 
@@ -67,6 +67,29 @@ defmodule MidiexWeb.Sy77Live do
 
   # Gestion des événements LiveView
   @impl true
+  def handle_event("add_to_library", _, socket) do
+    user_id = Integer.to_string(socket.assigns.current_user.id)
+
+    param = %{
+      "data" => socket.assigns.file_data,
+      "name" => socket.assigns.file,
+      "user_id" => user_id
+    }
+
+    case(Midiex.Voice.create_voices(param)) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Banque ajoutée avec succès !")}
+
+      {:error, _message} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Une erreur est survenue !")}
+    end
+  end
+
+  @impl true
   def handle_event("midi-access-granted", %{"sysexEnabled" => sysex_enabled}, socket) do
     Logger.info("SysEx enabled: #{sysex_enabled}")
     {:noreply, socket}
@@ -86,7 +109,6 @@ defmodule MidiexWeb.Sy77Live do
   @impl true
   def handle_event("send_sysex", %{"select_output" => output_id}, socket) do
     sysex_data = socket.assigns.file_data
-    IO.inspect(sysex_data, label: "data")
     Logger.info("Sending SysEx to output #{output_id}: #{inspect(sysex_data)}")
     {:noreply, push_event(socket, "send-sysex", %{outputId: output_id, data: sysex_data})}
   end
@@ -182,5 +204,24 @@ defmodule MidiexWeb.Sy77Live do
 
     # Retourner la notation de grille
     "#{column}#{row}"
+  end
+
+  def open_file(socket, %{"id" => id}) do
+    case Midiex.Voice.get_voices!(id) do
+      item ->
+        {:ok, voice_data} = Sy77Library.extract_all_voices(Jason.decode!(item.data))
+
+        socket
+        |> assign(:file, item.name)
+        |> assign(:file_data, item.data)
+        |> assign(:voice_data, voice_data)
+
+      _ ->
+        socket
+    end
+  end
+
+  def open_file(socket, _) do
+    socket
   end
 end

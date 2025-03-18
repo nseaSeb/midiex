@@ -1,4 +1,36 @@
 <.container max_width="md" class="w-full p-4">
   <.h2>Librairie</.h2>
-  
+
+  <table class="w-full border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="p-2 border border-gray-300">Nom</th>
+        <th class="p-2 border border-gray-300">Partagé</th>
+        <th class="p-2 border border-gray-300">Type</th>
+   
+      </tr>
+    </thead>
+    <tbody>
+      <%= for item <- @items do %>
+        <tr class="hover:bg-amber-200">
+          <td class="p-2 border border-gray-300">
+<.a to={"/sy77?id=#{item.id}"} class="" label={item.name} />         
+       
+          </td>
+          <td class="p-2 border border-gray-300">
+          <%= if item.is_shared do %>
+            <.icon name="hero-check" class="w-5 h-5 stroke-current bg-green-500 bold cursor-pointer" phx-click="unshare" phx-value-id={item.id}/>
+
+          <% else %>
+            <.icon name="hero-x-mark-solid" class="w-5 h-5 stroke-current bg-red-600 bold cursor-pointer" phx-click="share" phx-value-id={item.id}/>
+
+          <% end %>
+        </td>
+          <td class="p-2 border border-gray-300"><%= item.ex_type %></td>
+        
+       
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </.container>

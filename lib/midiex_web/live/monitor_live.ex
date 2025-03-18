@@ -42,8 +42,6 @@ defmodule MidiexWeb.MonitorLive do
     #   |> Enum.filter(&(&1 != ""))
     #   |> Enum.map(&String.to_integer/1)
 
-    # IO.inspect(sysex_data, label: "data")
-
     # Logger.info("Sending SysEx to output #{output_id}: #{inspect(sysex_data)}")
     # {:noreply, push_event(socket, "send-sysex", %{outputId: output_id, data: sysex_data})}
     {:noreply, socket}
